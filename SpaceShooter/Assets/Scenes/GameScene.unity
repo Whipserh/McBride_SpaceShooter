@@ -127,6 +127,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4194190890010494449, guid: 462add3d0f7c62a4682e9c053b00ec93, type: 3}
   m_PrefabInstance: {fileID: 228963359}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &48461660 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 596075294928896946, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+  m_PrefabInstance: {fileID: 98285811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &73178459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -249,11 +254,103 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 462add3d0f7c62a4682e9c053b00ec93, type: 3}
+--- !u!1001 &98285811
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2301990505270886567, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_Name
+      value: Orbital System
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.014387669
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3695347650650143362, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8382019928816532762, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
+      propertyPath: orbitedPlanet
+      value: 
+      objectReference: {fileID: 48461660}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c3b47d100d80f96419fd12c13303c43e, type: 3}
 --- !u!4 &154511008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4194190890010494449, guid: 462add3d0f7c62a4682e9c053b00ec93, type: 3}
   m_PrefabInstance: {fileID: 899560472}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &176895201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 176895202}
+  m_Layer: 0
+  m_Name: PowerUps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &176895202
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176895201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &228963359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3097,6 +3194,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
+      propertyPath: PowerPrefab
+      value: 
+      objectReference: {fileID: 1567431237259788, guid: 03444c0c59102ba46bb1a8b5a1b0a810, type: 3}
+    - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: bombOffset.x
       value: 3
       objectReference: {fileID: 0}
@@ -3132,6 +3233,10 @@ PrefabInstance:
       propertyPath: numberOfTrailBombs
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
+      propertyPath: powerParentTransform
+      value: 
+      objectReference: {fileID: 176895202}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: timeToReachTargetSpeed
       value: 1.58
@@ -3478,3 +3583,5 @@ SceneRoots:
   - {fileID: 1088617405}
   - {fileID: 1615314664}
   - {fileID: 1573207886}
+  - {fileID: 176895202}
+  - {fileID: 98285811}
