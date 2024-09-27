@@ -23,11 +23,28 @@ public class Enemy : MonoBehaviour
         EnemyMovement();
     }
 
+    public float turningTime = 1f;
+    private Vector3 oldVelocity = Vector3.zero;
     public void EnemyMovement()
     {
 
 
-        Vector3 direction;
+        Vector3 direction, velocity;
+
+        //find the direction to the player from where the enemy is currently at
+        direction = goalPosition - transform.position;
+        direction.Normalize();
+
+        // lerp the velocity
+        velocity = Vector3.Lerp(oldVelocity, direction * moveSpeed, updateMovementTimer / turningTime);
+
+
+        //move towards that location at velocity
+        transform.position += velocity * Time.deltaTime;
+
+        updateMovementTimer += Time.deltaTime;
+
+
 
         //after a certain amount of time go to where the player is now
         if (updateMovementTimer >= timerChange)
@@ -45,19 +62,10 @@ public class Enemy : MonoBehaviour
             //choose a new location
             goalPosition = transform.position + direction*Random.Range(maxTravel/2, maxTravel);
             updateMovementTimer = 0;
-            Debug.Log(transform.position);
-            Debug.Log(goalPosition);
+
+
+            oldVelocity = velocity;
         }
-
-
-        //find the direction to the player from where the enemy is currently at
-        direction = goalPosition - transform.position;
-        direction.Normalize();
-
-        //move towards that location
-        transform.position += direction * moveSpeed * Time.deltaTime;
-        
-        updateMovementTimer+= Time.deltaTime; 
 
     }
 }

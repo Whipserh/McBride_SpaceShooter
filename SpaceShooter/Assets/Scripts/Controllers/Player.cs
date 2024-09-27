@@ -1,6 +1,7 @@
 ﻿using Codice.Client.BaseCommands.CheckIn.Progress;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,6 +15,9 @@ public class Player : MonoBehaviour
     public float targetSpeed = 3;
     public float timeToTargetSpeed = 2f;
 
+
+    private float deceleration = 0f;
+    public float decelerationTime = 3f;
 
     private void Start()
     {
@@ -35,10 +39,55 @@ public class Player : MonoBehaviour
     {
         
         PlayerMovement();
+        EnemyRadar();
     }
 
-    private float deceleration = 0f;
-    public float decelerationTime = 3f;
+
+    public float radius = 1;
+    public int circlePoints = 3;
+    public void EnemyRadar()
+    {
+
+        //dummy proof the game designer
+        if (circlePoints < 3)
+        {
+            circlePoints = 3;
+        }
+
+
+
+        //check to see if the enemy is too close to the player
+        Color detection;
+        if((enemyTransform.position - transform.position).magnitude > radius)
+        {
+            detection = Color.green;
+        }
+        else
+        {
+            detection = Color.red;
+        }
+
+        List<float> angles = new List<float>();
+        //create the points
+        for(int i = 0; i < circlePoints; i++)
+        {
+            angles.Add(i * 360 /circlePoints);
+        }
+
+        //draw the circle
+        for(int i = 0; i < circlePoints - 1; i++)
+        {
+            Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i]), Mathf.Sin(Mathf.Deg2Rad * angles[i])))*radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i+1]), Mathf.Sin(Mathf.Deg2Rad * angles[i+1]))) * radius, detection);
+        }
+
+        Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints-1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints-1]))) * radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * radius, detection);
+
+
+
+    }
+
+
+
     public void PlayerMovement()
     {
         //reset the volicity at the start of every frame
