@@ -37,7 +37,8 @@ public class Player : MonoBehaviour
         PlayerMovement();
     }
 
-
+    private float deceleration = 0f;
+    public float decelerationTime = 3f;
     public void PlayerMovement()
     {
         //reset the volicity at the start of every frame
@@ -48,6 +49,10 @@ public class Player : MonoBehaviour
         //NOTE: this is updating the player's velcoity based on the players acceleration
         Vector3 newVelocity = velocity;
         
+        
+        
+        
+
         
         //hold left key
         if (Input.GetKey(KeyCode.LeftArrow)){
@@ -67,18 +72,44 @@ public class Player : MonoBehaviour
             newVelocity += Vector3.down * accleration * Time.deltaTime;
         }
 
-        if(newVelocity.magnitude <= targetSpeed)
+        //if we are not pressing a button to move
+        if (newVelocity != velocity)
         {
-            velocity = newVelocity;
+            if (newVelocity.magnitude <= targetSpeed)
+            {
+                velocity = newVelocity;
+            }
+
         }
+        else // velocity is the same and we didn't move
+        {
+
+            //did we set deceleration yet?
+            if (deceleration == 0)
+            {
+                deceleration = velocity.magnitude / decelerationTime;//set at a fixed deceleration
+            }
+            //slow down the velocity by the set deceleration
+            newVelocity -= velocity * deceleration * Time.deltaTime;
+
+            //update the players position
+            transform.position += newVelocity * Time.deltaTime;
+            return;//end the function
+        }
+        
+        
 
         //NOTE: this is updating the player's position based on its speed
         //velocity.Normalize();
         //velocity *= speed;
         transform.position += velocity * Time.deltaTime;
-        
+
+
+        //we are pressing a button to move 
+        deceleration = 0;
+
     }
 
-    
+
 
 }
