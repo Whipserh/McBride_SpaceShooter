@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public GameObject PowerPrefab;
     public List<Transform> asteroidTransforms;
     public Transform enemyTransform;
     public GameObject bombPrefab;
@@ -21,6 +23,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        SpawnPowerups(4, 6);
+
         accleration = targetSpeed / timeToTargetSpeed;
 
         List<string> words = new List<string>();
@@ -39,13 +43,12 @@ public class Player : MonoBehaviour
     {
         
         PlayerMovement();
-        EnemyRadar();
+        EnemyRadar(1, 7);
+        
     }
 
 
-    public float radius = 1;
-    public int circlePoints = 3;
-    public void EnemyRadar()
+    public void EnemyRadar(float radius, int circlePoints)
     {
 
         //dummy proof the game designer
@@ -80,13 +83,25 @@ public class Player : MonoBehaviour
             Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i]), Mathf.Sin(Mathf.Deg2Rad * angles[i])))*radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i+1]), Mathf.Sin(Mathf.Deg2Rad * angles[i+1]))) * radius, detection);
         }
 
-        Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints-1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints-1]))) * radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * radius, detection);
+        Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints - 1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints - 1]))) * radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * radius, detection);
 
 
 
     }
 
+    public Transform powerParentTransform;
+    public void SpawnPowerups(float radius, int numberOfPowerups)
+    {
 
+        List<float> angles = new List<float>();
+        //create the points
+        for (int i = 0; i < numberOfPowerups; i++)
+        {
+            float angle = (i * 360 / numberOfPowerups);
+            Instantiate(PowerPrefab, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle))) * radius, transform.rotation, powerParentTransform);
+        }
+
+    }
 
     public void PlayerMovement()
     {
