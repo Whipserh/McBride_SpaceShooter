@@ -44,7 +44,13 @@ public class Player : MonoBehaviour
         
         PlayerMovement();
         EnemyRadar(1, 7);
-        
+
+        //spawn a bomb
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SpawnSemiCircleBombs(1.5f, 3);
+        }
+
     }
 
 
@@ -103,6 +109,22 @@ public class Player : MonoBehaviour
 
     }
 
+    public void SpawnSemiCircleBombs(float radius, float numOfBombs)
+    {
+        //we want the bombs to be right behhind the player, we don't want bombs to spawn on the right and left side so our
+        //angle can't be 0 nor can it be pi which means we need to break  up the 180 degrees into numberOfBombs + 2
+        //(the beginning and the end)
+
+        for(int i = 1; i <= numOfBombs; i++)
+        { 
+            float angle = (i)*180/(numOfBombs + 1);
+            Vector3 bombPosition = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)) * radius;
+            Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
+        }
+    }
+
+
+
     public void PlayerMovement()
     {
         //reset the volicity at the start of every frame
@@ -112,12 +134,7 @@ public class Player : MonoBehaviour
 
         //NOTE: this is updating the player's velcoity based on the players acceleration
         Vector3 newVelocity = velocity;
-        
-        
-        
-        
-
-        
+                
         //hold left key
         if (Input.GetKey(KeyCode.LeftArrow)){
             newVelocity += Vector3.left * accleration * Time.deltaTime;
