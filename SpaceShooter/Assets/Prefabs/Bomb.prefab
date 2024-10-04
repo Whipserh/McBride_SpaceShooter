@@ -46,10 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followRadius: 3
-  speed: 2
+  maxSpeed: 1
   detectDetinationRadius: 1
   Enemy: {fileID: 4504276444959460, guid: e3900e4d87ee29c43ad1d9098b51432c, type: 3}
   updateTimer: 1
+  acceleration: 2
 --- !u!1 &1369739229142278
 GameObject:
   m_ObjectHideFlags: 0

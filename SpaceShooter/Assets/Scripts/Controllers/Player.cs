@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         //spawn a bomb
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SpawnSemiCircleBombs(1.5f, 3);
+            SpawnSemiCircleBombs(1.5f, 1);
         }
 
     }
@@ -161,22 +161,16 @@ public class Player : MonoBehaviour
             {
                 velocity = newVelocity;
             }
-
+            deceleration = 0;
         }
         else // velocity is the same and we didn't move
         {
-
-            //did we set deceleration yet?
-            if (deceleration == 0)
+            newVelocity = Vector3.Lerp(velocity, Vector3.zero, deceleration/decelerationTime);
+            deceleration += Time.deltaTime;
+            if(newVelocity == Vector3.zero)
             {
-                deceleration = velocity.magnitude / decelerationTime;//set at a fixed deceleration
+                velocity = Vector3.zero;
             }
-            //slow down the velocity by the set deceleration
-            newVelocity -= velocity * deceleration * Time.deltaTime;
-
-            //update the players position
-            transform.position += newVelocity * Time.deltaTime;
-            return;//end the function
         }
         
         
@@ -184,11 +178,11 @@ public class Player : MonoBehaviour
         //NOTE: this is updating the player's position based on its speed
         //velocity.Normalize();
         //velocity *= speed;
-        transform.position += velocity * Time.deltaTime;
+        transform.position += newVelocity * Time.deltaTime;
 
 
         //we are pressing a button to move 
-        deceleration = 0;
+        
 
     }
 
