@@ -21,7 +21,7 @@ public class Bomb : MonoBehaviour
         UpdateMove();
 
         //explode if enemy is too close
-        if ((Enemy.position - transform.position).magnitude <= detectDetinationRadius) ;
+        if ((Enemy.position - transform.position).magnitude <= detectDetinationRadius)
         {
             Destroy(Enemy);
             Destroy(transform);
