@@ -119,7 +119,8 @@ public class Player : MonoBehaviour
         { 
             float angle = (i)*180/(numOfBombs + 1);
             Vector3 bombPosition = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)) * radius;
-            Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
+            GameObject tempBomb = Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
+            tempBomb.GetComponent<Bomb>().Enemy = enemyTransform;
         }
     }
 
