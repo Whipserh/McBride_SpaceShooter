@@ -11,16 +11,16 @@ public class Bomb : MonoBehaviour
     public float updateTimer;
     void Start()
     {
-        goalPosition = transform.position; 
+        goalPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Enemy = GrabClosestCollider();
         DrawDetectionCirle(11);
         UpdateMove();
-
-        //explode if enemy is too close
+        //Detination
         if ((Enemy.position - transform.position).magnitude <= detectDetinationRadius)
         {
             Destroy(Enemy.gameObject);
@@ -28,6 +28,31 @@ public class Bomb : MonoBehaviour
         }
     }
 
+
+    
+    public Transform GrabClosestCollider()
+    {
+        
+        int index = 0;
+        Collider2D[]colliders = Physics2D.OverlapCircleAll(transform.position, followRadius);
+        if(colliders.Length == 0)
+        {
+            return null;
+        }
+
+        float closestDistance = Vector3.Distance(transform.position, colliders[index].gameObject.transform.position);
+        for (int i = 1; i < colliders.Length; i++)
+        {
+            if(closestDistance > Vector3.Distance(transform.position, colliders[i].gameObject.transform.position))
+            {
+                closestDistance = Vector3.Distance(transform.position, colliders[i].gameObject.transform.position);
+                index = i;
+            }
+        }
+
+        return colliders[index].gameObject.transform ;
+    }
+    
     public void DrawDetectionCirle(int circlePoints)
     {
         //dummy proof the game designer
@@ -37,10 +62,9 @@ public class Bomb : MonoBehaviour
         }
 
 
-
         //check to see if the enemy is too close to the player
         Color detection;
-        if ((Enemy.position - transform.position).magnitude >= followRadius)
+        if (GrabClosestCollider() == null)
         {
             detection = Color.white;
         }
@@ -48,7 +72,6 @@ public class Bomb : MonoBehaviour
         {
             detection = Color.yellow;
         }
-
 
         //create the points
         List<float> angles = new List<float>();
@@ -62,7 +85,6 @@ public class Bomb : MonoBehaviour
         {
             Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i]), Mathf.Sin(Mathf.Deg2Rad * angles[i]))) * followRadius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i + 1]), Mathf.Sin(Mathf.Deg2Rad * angles[i + 1]))) * followRadius, detection);
         }
-
         Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints - 1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints - 1]))) * followRadius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * followRadius, detection);
 
 
@@ -71,7 +93,6 @@ public class Bomb : MonoBehaviour
         {
             Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i]), Mathf.Sin(Mathf.Deg2Rad * angles[i]))) * detectDetinationRadius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[i + 1]), Mathf.Sin(Mathf.Deg2Rad * angles[i + 1]))) * detectDetinationRadius, Color.red);
         }
-
         Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints - 1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints - 1]))) * detectDetinationRadius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * detectDetinationRadius, Color.red);
 
         //**** i know that i can save some squeeze time by combining these 2 loops into 1 but for read ability i'm giong to keep it seperate.
@@ -82,10 +103,10 @@ public class Bomb : MonoBehaviour
     public void UpdateMove()
     {
         Vector3 velocity;
-        Vector3 direction = Enemy.position - transform.position;
         
+
         //if the enemy player is too close to the bomb it will slowly chase them
-        if (direction.magnitude > followRadius)
+        if (GrabClosestCollider())
         {
             updateMovementTimer = updateTimer;
             oldVelocity = Vector3.zero;
@@ -99,7 +120,7 @@ public class Bomb : MonoBehaviour
        
         
         //find the direction to the player from where the enemy is currently at
-        direction = goalPosition - transform.position;
+        Vector3 direction = goalPosition - transform.position;
         direction.Normalize();
 
 

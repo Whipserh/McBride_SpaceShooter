@@ -63,11 +63,11 @@ public class Player : MonoBehaviour
             circlePoints = 3;
         }
 
-
+        
 
         //check to see if the enemy is too close to the player
         Color detection;
-        if((enemyTransform.position - transform.position).magnitude > radius)
+        if(GrabClosestCollider(radius) == null)
         {
             detection = Color.green;
         }
@@ -91,9 +91,31 @@ public class Player : MonoBehaviour
 
         Debug.DrawLine(transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[circlePoints - 1]), Mathf.Sin(Mathf.Deg2Rad * angles[circlePoints - 1]))) * radius, transform.position + (new Vector3(Mathf.Cos(Mathf.Deg2Rad * angles[0]), Mathf.Sin(Mathf.Deg2Rad * angles[0]))) * radius, detection);
 
-
-
     }
+
+    public Transform GrabClosestCollider(float radius)
+    {
+
+        int index = 0;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+        if (colliders.Length == 0)
+        {
+            return null;
+        }
+
+        float closestDistance = Vector3.Distance(transform.position, colliders[index].gameObject.transform.position);
+        for (int i = 1; i < colliders.Length; i++)
+        {
+            if (closestDistance > Vector3.Distance(transform.position, colliders[i].gameObject.transform.position))
+            {
+                closestDistance = Vector3.Distance(transform.position, colliders[i].gameObject.transform.position);
+                index = i;
+            }
+        }
+
+        return colliders[index].gameObject.transform;
+    }
+
 
     public Transform powerParentTransform;
     public void SpawnPowerups(float radius, int numberOfPowerups)
@@ -119,8 +141,8 @@ public class Player : MonoBehaviour
         { 
             float angle = (i)*180/(numOfBombs + 1);
             Vector3 bombPosition = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)) * radius;
-            GameObject tempBomb = Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
-            tempBomb.GetComponent<Bomb>().Enemy = enemyTransform;
+            Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
+            
         }
     }
 
