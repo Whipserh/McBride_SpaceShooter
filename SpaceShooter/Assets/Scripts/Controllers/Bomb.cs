@@ -21,7 +21,7 @@ public class Bomb : MonoBehaviour
         DrawDetectionCirle(11);
         UpdateMove();
         //Detination
-        if ((Enemy.position - transform.position).magnitude <= detectDetinationRadius)
+        if (Enemy != null &&(Enemy.position - transform.position).magnitude <= detectDetinationRadius)
         {
             Destroy(Enemy.gameObject);
             Destroy(gameObject);
@@ -106,7 +106,7 @@ public class Bomb : MonoBehaviour
         
 
         //if the enemy player is too close to the bomb it will slowly chase them
-        if (GrabClosestCollider())
+        if (GrabClosestCollider() == null)
         {
             updateMovementTimer = updateTimer;
             oldVelocity = Vector3.zero;
