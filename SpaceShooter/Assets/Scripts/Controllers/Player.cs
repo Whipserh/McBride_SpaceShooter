@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class Player : MonoBehaviour
 {
@@ -25,15 +27,18 @@ public class Player : MonoBehaviour
     {
         SpawnPowerups(4, 6);
 
+        //determine the acceleration
         accleration = targetSpeed / timeToTargetSpeed;
-
+        
+        /*
         List<string> words = new List<string>();
         words.Add("Dog");
         words.Add("Cat");
         words.Add("Log");
         words.Insert(1, "Rat");
-
+        
         Debug.Log("The cat is at index: " +words.IndexOf("Cat"));
+        */
     }
 
 
@@ -48,7 +53,12 @@ public class Player : MonoBehaviour
         //spawn a bomb
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SpawnSemiCircleBombs(1.5f, 1);
+            SpawnSemiCircleBombs(1.5f, 3);
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            
+            SpawnHeatSeekingMissile();
         }
 
     }
@@ -136,56 +146,106 @@ public class Player : MonoBehaviour
         //we want the bombs to be right behhind the player, we don't want bombs to spawn on the right and left side so our
         //angle can't be 0 nor can it be pi which means we need to break  up the 180 degrees into numberOfBombs + 2
         //(the beginning and the end)
-
-        for(int i = 1; i <= numOfBombs; i++)
+        float currentAngle = (Mathf.Atan2(transform.up.y, transform.up.x));
+        for (int i = 1; i <= numOfBombs; i++)
         { 
-            float angle = (i)*180/(numOfBombs + 1);
-            Vector3 bombPosition = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle), Mathf.Sin(Mathf.Deg2Rad * angle)) * radius;
+            float angle = ((i)*180/(numOfBombs + 1)  - 90) * Mathf.Deg2Rad + currentAngle;
+            Vector3 bombPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
             Instantiate(bombPrefab, transform.position - bombPosition, transform.rotation, bombsTransform);
             
         }
     }
 
 
+    public GameObject missilePrefab;
+    public Transform missilesTransform;
+    public void SpawnHeatSeekingMissile()
+    {
+        Vector3 spawnPoint = transform.position + transform.up;
+        Instantiate(missilePrefab, spawnPoint, transform.rotation, missilesTransform);
+    }
 
     public void PlayerMovement()
     {
         //reset the volicity at the start of every frame
         //NOTE: if we remove this we now have drag/momentum in our game
-        //velocity = Vector3.zero;
-
 
         //NOTE: this is updating the player's velcoity based on the players acceleration
         Vector3 newVelocity = velocity;
                 
-        //hold left key
-        if (Input.GetKey(KeyCode.LeftArrow)){
+        
+        //get player input and convert to velocity
+        if (Input.GetKey(KeyCode.LeftArrow)){//left button press
             newVelocity += Vector3.left * accleration * Time.deltaTime;
-
-        //hold down right velocity
-        } 
-        if (Input.GetKey(KeyCode.RightArrow)){
+        } else if (Input.GetKey(KeyCode.RightArrow)){//right button press
             newVelocity += Vector3.right * accleration * Time.deltaTime;
-
         }
-        if (Input.GetKey(KeyCode.UpArrow)){
+        
+        if (Input.GetKey(KeyCode.UpArrow)){//up button press
             newVelocity += Vector3.up * accleration * Time.deltaTime;
 
-        }
-        if (Input.GetKey(KeyCode.DownArrow)){
+        }else if (Input.GetKey(KeyCode.DownArrow)){//down button press
             newVelocity += Vector3.down * accleration * Time.deltaTime;
         }
 
-        //if we are not pressing a button to move
-        if (newVelocity != velocity)
-        {
+        //****************************************************************************************************
+        //NOTE: player decelerates if they don't move
+        if (newVelocity != velocity) { //if we are not pressing a button to move
             if (newVelocity.magnitude <= targetSpeed)
             {
                 velocity = newVelocity;
             }
             deceleration = 0;
-        }
-        else // velocity is the same and we didn't move
+
+            //****************************************************************************************************
+            //NOTE: Rotate the player to face the direction that they are heading
+
+            //Debug.DrawLine(transform.position, transform.position + transform.up, Color.green);//where the ship is facing
+
+            Vector3 direction = newVelocity.normalized;
+
+            float currentAngle = (Mathf.Atan2(transform.up.y, transform.up.x) * Mathf.Rad2Deg);
+            float targetAngle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+
+            //keep all the angles above 0
+            if (currentAngle < 0)
+                currentAngle += 360;
+            if (targetAngle < 0)
+                targetAngle += 360;
+
+            //if we are not in our buffer range then we move
+            if (Mathf.Abs(currentAngle - targetAngle) > 0)
+            {
+
+                if (targetAngle < currentAngle)
+                {
+                    if (Mathf.Abs(currentAngle - targetAngle) < 180)
+                    {
+                        transform.Rotate(new Vector3(0, 0, -1 * angleSpeed * Time.deltaTime));
+                    }
+                    else
+                    {
+                        transform.Rotate(new Vector3(0, 0, angleSpeed * Time.deltaTime));//turn counterclockwise
+                    }
+                }
+                else
+                {
+                    if (Mathf.Abs(currentAngle - targetAngle) < 180)
+                    {
+                        transform.Rotate(new Vector3(0, 0, angleSpeed * Time.deltaTime));//turn counterclockwise
+
+                    }
+                    else
+                    {
+                        transform.Rotate(new Vector3(0, 0, -1 * angleSpeed * Time.deltaTime));
+                    }
+
+                }
+
+
+            }
+
+        } else // velocity is the same and we didn't move
         {
             newVelocity = Vector3.Lerp(velocity, Vector3.zero, deceleration/decelerationTime);
             deceleration += Time.deltaTime;
@@ -196,18 +256,15 @@ public class Player : MonoBehaviour
         }
         
         
-
+        //****************************************************************************************************
         //NOTE: this is updating the player's position based on its speed
         //velocity.Normalize();
         //velocity *= speed;
         transform.position += newVelocity * Time.deltaTime;
 
-
-        //we are pressing a button to move 
-        
-
+       
     }
-
+    public float angleSpeed;
 
 
 }

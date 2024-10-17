@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
         //after a certain amount of time go to where the player is now
         if (updateMovementTimer >= timerChange)
         {
-            Debug.Log("update path");
+            //Debug.Log("update path");
             
             //get the direction where the enemy is going
             direction = playerTransform.position - transform.position;
