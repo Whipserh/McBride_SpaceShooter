@@ -1736,11 +1736,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4504276444959460, guid: e3900e4d87ee29c43ad1d9098b51432c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.23
+      value: 2.91
       objectReference: {fileID: 0}
     - target: {fileID: 4504276444959460, guid: e3900e4d87ee29c43ad1d9098b51432c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.08
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 4504276444959460, guid: e3900e4d87ee29c43ad1d9098b51432c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3332,6 +3332,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
+      propertyPath: missilePrefab
+      value: 
+      objectReference: {fileID: 1761202055222398, guid: 561200a1f15bfaa449ccc4cb56a3a980, type: 3}
+    - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: bombsTransform
       value: 
       objectReference: {fileID: 1615314664}
@@ -3355,6 +3359,10 @@ PrefabInstance:
       propertyPath: MissilesTransform
       value: 
       objectReference: {fileID: 4871648644786788, guid: 561200a1f15bfaa449ccc4cb56a3a980, type: 3}
+    - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
+      propertyPath: missilesTransform
+      value: 
+      objectReference: {fileID: 696321433}
     - target: {fileID: 6890330259706833056, guid: abc125f00ae369940b2c5c0275186637, type: 3}
       propertyPath: numberOfTrailBombs
       value: 3
@@ -3707,8 +3715,8 @@ SceneRoots:
   - {fileID: 2030902519}
   - {fileID: 1223632478}
   - {fileID: 1088617405}
+  - {fileID: 696321433}
   - {fileID: 1615314664}
   - {fileID: 1573207886}
   - {fileID: 176895202}
   - {fileID: 98285811}
-  - {fileID: 696321433}
