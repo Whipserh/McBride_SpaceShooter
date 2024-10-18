@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        SpawnPowerups(4, 6);
+        //SpawnPowerups(4, 6);
 
         //determine the acceleration
         accleration = targetSpeed / timeToTargetSpeed;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         //spawn a bomb
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SpawnSemiCircleBombs(1.5f, 3);
+            SpawnSemiCircleBombs(1.5f, 2);
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
